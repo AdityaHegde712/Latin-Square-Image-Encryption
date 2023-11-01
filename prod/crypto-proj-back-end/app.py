@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify, send_file
 from io import BytesIO
 from flask_cors import CORS
+from PIL import Image
+from encryption import encrypt_image
 
 app = Flask(__name__)
 CORS(app) 
@@ -17,16 +19,16 @@ def upload_image():
         # Check if the file is a valid image
         if file and allowed_file(file.filename):
             # Read the uploaded image
-            uploaded_image = file.read()
+            uploaded_image_data = file.read()
+            uploaded_image = Image.open(BytesIO(uploaded_image_data))
 
-            # You can perform any processing on the image here if needed
-
-            # Return the uploaded image as a response
-            response = BytesIO(uploaded_image)
-            response.seek(0)
+            processed_image = encrypt_image(uploaded_image)
+            output_buffer = BytesIO()
+            processed_image.save(output_buffer, format="JPEG")
+            output_buffer.seek(0)
 
             return send_file(
-                response,
+                output_buffer,
                 as_attachment=True,
                 download_name='uploaded_image.jpg',
                 mimetype='image/jpeg'

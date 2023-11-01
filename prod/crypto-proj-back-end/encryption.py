@@ -7,7 +7,7 @@ def generate_latin_square(size):
     np.random.shuffle(latin_square)
     return latin_square
 
-class LatinSquareEncryption:
+class _LatinSquareEncryption:
     def __init__(self, image_data, secret_key):
         self.image_data = image_data
         self.secret_key = secret_key
@@ -94,10 +94,9 @@ class LatinSquareEncryption:
 
 
 # Main program
-if __name__ == "__main__":
+def encrypt_image(image: Image):
     # Load an example image (replace with your image loading code)
-    image_path = "test_images\\aa_gray.jpg"  # Replace with the path to your image file
-    image = Image.open(image_path).convert('L')
+    image = image.convert('L')
 
     # Convert the image to a numpy array
     image_data = np.array(image)
@@ -105,7 +104,7 @@ if __name__ == "__main__":
     # Step 1: Generate a secret key K (32 bytes)
     secret_key = np.random.bytes(32)
 
-    crypto = LatinSquareEncryption(image_data, secret_key)
+    crypto = _LatinSquareEncryption(image_data, secret_key)
 
     # Generate a Latin square (substitution matrix) for the given size
     crypto.generate_latin_square()
@@ -139,7 +138,4 @@ if __name__ == "__main__":
     # original_image.save("decrypted_images\\aa_gray_original.jpg")
     
 
-    # Alternatively, you can save the encrypted image to a file
-    whitened_image.save("encrypted_images\\aa_whitened.jpg")
-    substituted_image.save("encrypted_images\\aa_substituted.jpg")
-    encrypted_image.save("encrypted_images\\aa_permuted_(encrypted).jpg")
+    return encrypted_image
