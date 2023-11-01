@@ -1,8 +1,8 @@
 <template>
-  <div class="min-h-[100vh] flex items-center justify-center mt-4 pb-20">
-    <div
-      class="bg-slate-50 rounded-lg p-8 space-y-8 w-full max-w-md min-w-[50%]"
-    >
+  <div
+    class="min-h-[100vh] bg-slate-100 flex items-center justify-center mt-4 pb-20"
+  >
+    <div class="bg-white rounded-lg p-8 space-y-8 w-full max-w-md min-w-[50%]">
       <h1 class="text-2xl font-bold text-center">Image Upload and Display</h1>
 
       <form @submit.prevent="uploadImage" class="space-y-4">
