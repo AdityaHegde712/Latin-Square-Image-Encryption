@@ -5,7 +5,8 @@ from PIL import Image
 from encryption import encrypt_image
 
 app = Flask(__name__)
-CORS(app) 
+CORS(app)
+
 
 @app.route('/upload', methods=['POST'])
 def upload_image():
@@ -34,6 +35,37 @@ def upload_image():
                 mimetype='image/jpeg'
             )
 
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/decrypt', methods=["POST"])
+def decrypt():
+    try:
+        if 'image' not in request.files:
+            return jsonify({'error': 'No file part'}), 400
+
+        file = request.files['image']
+
+        # Check if the file is a valid image
+        if file and allowed_file(file.filename):
+            # Read the uploaded image
+            uploaded_image = file.read()
+
+            # You can perform any processing on the image here if needed
+
+            # Return the uploaded image as a response
+            response = BytesIO(uploaded_image)
+            response.seek(0)
+
+            return send_file(
+                response,
+                as_attachment=True,
+                download_name='uploaded_image.jpg',
+                mimetype='image/jpeg'
+            )
+        else:
+            raise Exception()
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
