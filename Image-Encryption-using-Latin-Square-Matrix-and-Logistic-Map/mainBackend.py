@@ -359,19 +359,13 @@ def LatinSqDec2(C,K):
         CP = LatinSq_Permutation(CW,tL,'decryption')
 
         #Latin Square Whitening
-        CW = LatinSq_Whitening(CP,tL,'decryption')
-        CW=K[1]
+        CW = LatinSq_Whitening(CP,tL,'decryption')                                                                                              ; CW=K[1]
     P = CW
     return P
 
-
-
-
-if __name__ == "__main__":
-    img = cv2.imread('Image-Encryption-using-Latin-Square-Matrix-and-Logistic-Map\\test_images\\aa_gray.jpg')
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    gray = cv2.resize(gray, (256,256))
-
+LE = None
+def encryptTotal(gray):
+    global LE
     # Encryption
     LE = LatinSqEnc2(gray)
     cv2.imwrite('buffer/aa_gray_enc.png', LE[0])
@@ -379,11 +373,27 @@ if __name__ == "__main__":
     # Logistic Encryption
     LogisticEncryption('buffer/aa_gray_enc.png', "abcdefghijklm")
 
+    # read the encrypted image
+    img = cv2.imread('buffer/aa_gray_enc_LogisticEnc.png')
+    return img
+
+
+def decryptTotal(filename = "buffer/aa_gray_enc_LogisticEnc"):
     # Logistic Decryption
-    LogisticDecryption("buffer/aa_gray_enc_LogisticEnc", "abcdefghijklm")
+    LogisticDecryption(filename, "abcdefghijklm")
 
     # Decryption
     img = cv2.imread('buffer/aa_LogisticDec.png')
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     LD = LatinSqDec2(gray,LE[1])
     cv2.imwrite('buffer/latinDec.png',LD)
+    return LD
+
+
+if __name__ == "__main__":
+    img = cv2.imread('Image-Encryption-using-Latin-Square-Matrix-and-Logistic-Map\\test_images\\aa_gray.jpg')
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    gray = cv2.resize(gray, (256,256))
+
+    encryptTotal(gray)
+    decryptTotal()
