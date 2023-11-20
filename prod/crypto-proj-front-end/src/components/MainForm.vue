@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from "vue";
+import JSZip from "jszip";
 import constants from "../constants";
 
 const encryptedImageReady = ref(false);
@@ -25,6 +26,11 @@ const uploadImage = async () => {
   if (!response.ok) {
     console.log(await response.json());
   } else {
+    const zip = new JSZip();
+    const zipfile = await response.type;
+    zip.loadAsync(zipfile).then((contents) => {
+      console.log(contents.folder("buffer").file("processed_image_dec.png"));
+    });
     encryptedImageBlob.value = await response.blob();
 
     encryptedImageURL.value = URL.createObjectURL(encryptedImageBlob.value);
