@@ -1,2 +1,3 @@
 encrypted_images/
 decrypted_images/
+.*/node_modules/
